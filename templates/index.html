@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Controller</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            margin: 0;
+        }
+        button {
+            margin: 10px;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .k {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .a {
+            display: flex;
+            flex-direction: row;
+            margin-left: 70px;
+            margin-right: 70px;
+
+        }
+
+        .b {
+            display: flex;
+            flex-direction: row;
+            margin-left: 70px;
+            margin-right: 70px;
+
+        }
+
+        button {
+            margin: 50px;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .key {
+          width: 50px;
+          height: 50px;
+          margin: 10px;
+          padding: 20px;
+          font-size: 18px;
+          background-color: #ccc;
+          text-align: center;
+          line-height: 50px;
+          cursor: pointer;
+        }
+        .key:hover {
+            background-color: brown;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="k">
+        <button class="a" id="left">L</button>
+        <button class="b" id="jump">J</button>
+    </div>
+    <div class="k">
+        <button class="a" id="right">R</button>
+        <button class="b" id="attack">A</button>
+    </div>
+    
+
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+
+</head>
+    <script>
+        const socket = io()
+
+        document.getElementById('left').addEventListener('touchstart', () => {
+            socket.emit('keyPress', { key: 'a', pressed: true });
+        });
+        document.getElementById('left').addEventListener('touchend', () => {
+            socket.emit('keyPress', { key: 'a', pressed: false });
+        });
+
+        document.getElementById('right').addEventListener('touchstart', () => {
+            socket.emit('keyPress', { key: 'd', pressed: true });
+        });
+        document.getElementById('right').addEventListener('touchend', () => {
+            socket.emit('keyPress', { key: 'd', pressed: false });
+        });
+
+        document.getElementById('jump').addEventListener('click', () => {
+            socket.emit('keyPress', { key: 'w', pressed: true });
+        });
+
+        document.getElementById('attack').addEventListener('click', () => {
+            socket.emit('keyPress', { key: ' ', pressed: true });
+        });
+
+        socket.on('keyPress', (data) => {
+            console.log(data);
+        });
+    </script>
+</body>
+</html>

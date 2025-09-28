@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Controller</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            margin: 0;
+        }
+        button {
+            margin: 10px;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .k {
+            display: flex;
+            flex-direction: column;
+            margin-left: 70px;
+            margin-right: 70px;
+        }
+
+        .key {
+          width: 50px;
+          height: 50px;
+          margin: 10px;
+          padding: 20px;
+          font-size: 18px;
+          background-color: #ccc;
+          text-align: center;
+          line-height: 50px;
+          cursor: pointer;
+        }
+        .key:hover {
+            background-color: brown;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="k">
+        <button id="left">L</button>
+        <button id="jump">J</button>
+    </div>
+    <div class="k">
+        <button id="right">R</button>
+        <button id="attack">A</button>
+    </div>
+    
+
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+
+        document.getElementById('left').addEventListener('touchstart', () => {
+            socket.emit('keyPress', { key: 'ArrowLeft', pressed: true });
+        });
+        document.getElementById('left').addEventListener('touchend', () => {
+            socket.emit('keyPress', { key: 'ArrowLeft', pressed: false });
+        });
+
+        document.getElementById('right').addEventListener('touchstart', () => {
+            socket.emit('keyPress', { key: 'ArrowRight', pressed: true });
+        });
+        document.getElementById('right').addEventListener('touchend', () => {
+            socket.emit('keyPress', { key: 'ArrowRight', pressed: false });
+        });
+
+        document.getElementById('jump').addEventListener('click', () => {
+            socket.emit('keyPress', { key: 'ArrowUp', pressed: true });
+        });
+
+        document.getElementById('attack').addEventListener('click', () => {
+            socket.emit('keyPress', { key: 'ArrowDown', pressed: true });
+        });
+
+        socket.on('keyPress', (data) => {
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
